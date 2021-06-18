@@ -1,0 +1,1 @@
+newman run  TrelloExercices.postman_collection.json -e TrelloExercecesEnvironment.postman_environment.json -r htmlextra

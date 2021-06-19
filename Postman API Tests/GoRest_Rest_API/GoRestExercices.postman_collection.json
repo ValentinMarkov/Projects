@@ -269,12 +269,18 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
 									"\r",
-									"pm.test(\"Number of post is plus 1\", function () {\r",
+									"// pm.test(\"Number of posts is 1\", function () {\r",
+									"//     var jsonData = pm.response.json();\r",
+									"//     pm.expect(jsonData.meta.pagination.total).to.eql(\"1\");\r",
+									"// });\r",
+									"\r",
+									"pm.test(\"Number of posts is 1\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.meta.pagination.total).to.eql(countBefore+1);\r",
-									"});"
+									"    pm.expect(jsonData.meta.pagination.total).to.eql(parseInt(\"1\"));\r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -374,6 +380,7 @@
 									"    var expectedEmail = pm.collectionVariables.get(\"email\");\r",
 									"    pm.expect(jsonData.data.email).to.eql(expectedEmail);\r",
 									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -415,7 +422,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Created User Posts",
+					"name": "Get User Posts",
 					"event": [
 						{
 							"listen": "test",
@@ -425,14 +432,16 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
+									" var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
 									"\r",
-									"pm.test(\"Number of post is plus 1\", function () {\r",
-									"//     var jsonData = pm.response.json();\r",
-									"//     pm.expect(jsonData.meta.pagination.total).to.eql(countBefore+1);\r",
-									"// pm.test(\"Status code is 200\", function () {\r",
-									"//     pm.response.to.have.status(200);\r",
-									"// });\r",
+									"\r",
+									"pm.test(\"Number of post is equal to 0 (zero)\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.meta.pagination.total).to.eql(parseInt(\"0\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
 									"\r",
 									""
 								],
@@ -486,7 +495,9 @@
 									"\r",
 									"pm.test(\"Post created with supplied body\", function () {\r",
 									"  pm.expect(pm.response.json().data.body).to.eql(pm.collectionVariables.get(\"post_Body\"));\r",
-									"});"
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -520,7 +531,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Created User Posts After Creation",
+					"name": "Get User Posts After Creation",
 					"event": [
 						{
 							"listen": "test",
@@ -530,16 +541,14 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
+									" var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
 									"\r",
-									"pm.test(\"Number of post is plus 1\", function () {\r",
-									"//     var jsonData = pm.response.json();\r",
-									"//     pm.expect(jsonData.meta.pagination.total).to.eql(countBefore+1);\r",
-									"// pm.test(\"Status code is 200\", function () {\r",
-									"//     pm.response.to.have.status(200);\r",
-									"// });\r",
 									"\r",
-									""
+									"\r",
+									"pm.test(\"Number of posts is 1 (one)\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.meta.pagination.total).to.eql(parseInt(countBefore+1));\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -564,7 +573,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Post",
+					"name": "Delete User Post",
 					"event": [
 						{
 							"listen": "test",
@@ -597,7 +606,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Created User Posts After Deleated",
+					"name": "Get User Posts After Deleated Post",
 					"event": [
 						{
 							"listen": "test",
@@ -607,12 +616,11 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"var countBefore = pm.collectionVariables.get(\"postsBeforeCreation\", pm.response.json().meta.pagination.total);\r",
 									"\r",
-									"pm.test(\"Number of post is plus 1\", function () {\r",
+									"pm.test(\"Number of post is equal to 0 (zero)\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.meta.pagination.total).to.eql(countBefore+1);\r",
-									"});"
+									"    pm.expect(jsonData.meta.pagination.total).to.eql(parseInt(\"0\"));\r",
+									"    });"
 								],
 								"type": "text/javascript"
 							}
@@ -675,10 +683,86 @@
 			]
 		},
 		{
-			"name": "AddComments",
+			"name": "Add Comments",
 			"item": [
 				{
-					"name": "AddCommentToUserPost",
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.collectionVariables.set(\"user_id\", pm.response.json().data.id);\r",
+									" pm.collectionVariables.set(\"name\", pm.response.json().data.name);\r",
+									"  pm.collectionVariables.set(\"email\", pm.response.json().data.email);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.eql(201);\r",
+									"});\r",
+									"pm.test(\"Id is not undefined\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"console.log(pm.response.json().data.name);\r",
+									"\r",
+									"pm.test(\"User created with suplied name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedName = pm.collectionVariables.get(\"name\");\r",
+									"    pm.expect(jsonData.data.name).to.eql(expectedName);\r",
+									"});\r",
+									"pm.test(\"User created with suplied email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedEmail = pm.collectionVariables.get(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.eql(expectedEmail);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"name\": \"{{name}}\",\r\n            \"email\": \"{{email}}\",\r\n            \"gender\": \"{{gender}}\",\r\n            \"status\": \"{{status}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Post",
 					"event": [
 						{
 							"listen": "test",
@@ -687,7 +771,73 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"post_Id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"post_Title\", pm.response.json().data.title);\r",
+									"pm.collectionVariables.set(\"post_Body\", pm.response.json().data.body);\r",
+									"\r",
+									"pm.test(\"User_Id is integer\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"      pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Post created with supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.title).to.eql(pm.collectionVariables.get(\"post_Title\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Post created with supplied body\", function () {\r",
+									"  pm.expect(pm.response.json().data.body).to.eql(pm.collectionVariables.get(\"post_Body\"));\r",
+									"});\r",
+									"\r",
 									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "      {\r\n            \"title\": \"Title: {{post_title}}\",\r\n            \"body\": \"Body: {{post_body}}\"\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment To User Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"comment_Id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"comment_Name\", pm.response.json().data.name);\r",
+									"pm.collectionVariables.set(\"comment_Body\", pm.response.json().data.body);"
 								],
 								"type": "text/javascript"
 							}
@@ -706,15 +856,92 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/public-api/posts/{{postId}}/comments",
+							"raw": "{{baseUrl}}/public-api/posts/{{post_Id}}/comments",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"public-api",
 								"posts",
-								"{{postId}}",
+								"{{post_Id}}",
 								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Created Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Comment created with supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.name).to.eql(pm.collectionVariables.get(\"comment_Name\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Comment created with supplied body\", function () {\r",
+									"  pm.expect(pm.response.json().data.body).to.eql(pm.collectionVariables.get(\"comment_Body\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public-api/comments/{{comment_Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"comments",
+								"{{comment_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}"
 							]
 						}
 					},
@@ -726,7 +953,83 @@
 			"name": "UpdatePost",
 			"item": [
 				{
-					"name": "UpdatePost",
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.collectionVariables.set(\"user_id\", pm.response.json().data.id);\r",
+									" pm.collectionVariables.set(\"name\", pm.response.json().data.name);\r",
+									"  pm.collectionVariables.set(\"email\", pm.response.json().data.email);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.eql(201);\r",
+									"});\r",
+									"pm.test(\"Id is not undefined\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"console.log(pm.response.json().data.name);\r",
+									"\r",
+									"pm.test(\"User created with suplied name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedName = pm.collectionVariables.get(\"name\");\r",
+									"    pm.expect(jsonData.data.name).to.eql(expectedName);\r",
+									"});\r",
+									"pm.test(\"User created with suplied email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedEmail = pm.collectionVariables.get(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.eql(expectedEmail);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"name\": \"{{name}}\",\r\n            \"email\": \"{{email}}\",\r\n            \"gender\": \"{{gender}}\",\r\n            \"status\": \"{{status}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Post",
 					"event": [
 						{
 							"listen": "test",
@@ -736,17 +1039,86 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Post title is update\", function () {\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"post_Id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"post_Title\", pm.response.json().data.title);\r",
+									"pm.collectionVariables.set(\"post_Body\", pm.response.json().data.body);\r",
+									"\r",
+									"pm.test(\"User_Id is integer\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var updateTitle = pm.collectionVariables.get(\"updateTitle\");\r",
-									"    pm.expect(jsonData.data.title).to.eql(updateTitle);\r",
+									"      pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Post body is update\", function () {\r",
+									"pm.test(\"Post created with supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.title).to.eql(pm.collectionVariables.get(\"post_Title\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Post created with supplied body\", function () {\r",
+									"  pm.expect(pm.response.json().data.body).to.eql(pm.collectionVariables.get(\"post_Body\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "      {\r\n            \"title\": \"Title: {{post_title}}\",\r\n            \"body\": \"Body: {{post_body}}\"\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"updatePost_Id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"updatePost_Title\", pm.response.json().data.title);\r",
+									"pm.collectionVariables.set(\"updatePost_Body\", pm.response.json().data.body);\r",
+									"\r",
+									"pm.test(\"User_Id is integer\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    var updateBody = pm.collectionVariables.get(\"updateBody\");\r",
-									"    pm.expect(jsonData.data.body).to.eql(updateBody);\r",
-									"});"
+									"      pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Post update with supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.title).to.eql(pm.collectionVariables.get(\"updatePost_Title\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Post update with supplied body\", function () {\r",
+									"  pm.expect(pm.response.json().data.body).to.eql(pm.collectionVariables.get(\"updatePost_Body\"));\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -757,7 +1129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "      {\r\n            \"title\": \"{{updateTitle}}\",\r\n            \"body\": \"{{updateBody}}\"\r\n        }",
+							"raw": "      {\r\n            \"title\": \"Update title: {{updateTitle}}\",\r\n            \"body\": \"Update body: {{updateBody}}\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -765,14 +1137,50 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/public-api/posts/{{postId}}",
+							"raw": "{{baseUrl}}/public-api/posts/{{post_Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"public-api",
 								"posts",
-								"{{postId}}"
+								"{{post_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}"
 							]
 						}
 					},
@@ -784,13 +1192,93 @@
 			"name": "AddToDos",
 			"item": [
 				{
-					"name": "AddToDo_ToUser",
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.collectionVariables.set(\"user_id\", pm.response.json().data.id);\r",
+									" pm.collectionVariables.set(\"name\", pm.response.json().data.name);\r",
+									"  pm.collectionVariables.set(\"email\", pm.response.json().data.email);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.eql(201);\r",
+									"});\r",
+									"pm.test(\"Id is not undefined\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"console.log(pm.response.json().data.name);\r",
+									"\r",
+									"pm.test(\"User created with suplied name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedName = pm.collectionVariables.get(\"name\");\r",
+									"    pm.expect(jsonData.data.name).to.eql(expectedName);\r",
+									"});\r",
+									"pm.test(\"User created with suplied email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedEmail = pm.collectionVariables.get(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.eql(expectedEmail);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"name\": \"{{name}}\",\r\n            \"email\": \"{{email}}\",\r\n            \"gender\": \"{{gender}}\",\r\n            \"status\": \"{{status}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add ToDo To User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.collectionVariables.set(\"toDo_id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"toDo_Title\", pm.response.json().data.title);\r",
+									"pm.collectionVariables.set(\"toDo_Status\", pm.response.json().data.completed);\r",
+									"\r",
+									"\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -818,7 +1306,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "   {\r\n            \"title\": \"{{$randomCatchPhrase}}\",\r\n            \"completed\": \"false\"\r\n        }",
+							"raw": "   {\r\n            \"title\": \"Buy: {{toDoTask}}\",\r\n            \"completed\": \"false\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -826,47 +1314,63 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/public-api/todos/{{id}}",
+							"raw": "{{baseUrl}}/public-api/todos/{{user_id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"public-api",
 								"todos",
-								"{{id}}"
+								"{{user_id}}"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "MarkToDosАsCompleted",
-			"item": [
+				},
 				{
-					"name": "MarkToDoAsCompleted",
+					"name": "Get To Do Task",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ToDo task created with supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.title).to.eql(pm.collectionVariables.get(\"toDo_Title\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ToDo task isn't completed\", function () {\r",
+									"  pm.expect(pm.response.json().data.completed).to.eql(false);\r",
 									"});\r",
 									"\r",
 									""
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "   {\r\n            \"title\": \"{{$randomCatchPhrase}}\",\r\n            \"completed\": \"true\"\r\n        }",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -886,83 +1390,340 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "DeleteUser",
-			"event": [
+			"name": "MarkToDosАsCompleted",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response code is 204\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.code).to.eql(204);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/public-api/users/{{id}}",
-					"host": [
-						"{{baseUrl}}"
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.collectionVariables.set(\"user_id\", pm.response.json().data.id);\r",
+									" pm.collectionVariables.set(\"name\", pm.response.json().data.name);\r",
+									"  pm.collectionVariables.set(\"email\", pm.response.json().data.email);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.eql(201);\r",
+									"});\r",
+									"pm.test(\"Id is not undefined\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"console.log(pm.response.json().data.name);\r",
+									"\r",
+									"pm.test(\"User created with suplied name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedName = pm.collectionVariables.get(\"name\");\r",
+									"    pm.expect(jsonData.data.name).to.eql(expectedName);\r",
+									"});\r",
+									"pm.test(\"User created with suplied email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var expectedEmail = pm.collectionVariables.get(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.eql(expectedEmail);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"public-api",
-						"users",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteUser_1",
-			"event": [
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"name\": \"{{name}}\",\r\n            \"email\": \"{{email}}\",\r\n            \"gender\": \"{{gender}}\",\r\n            \"status\": \"{{status}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response code is 204\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.code).to.eql(204);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/public-api/users/{{id_1}}",
-					"host": [
-						"{{baseUrl}}"
+					"name": "Add ToDo To User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"toDo_id\", pm.response.json().data.id);\r",
+									"pm.collectionVariables.set(\"toDo_Title\", pm.response.json().data.title);\r",
+									"pm.collectionVariables.set(\"toDo_Status\", pm.response.json().data.completed);\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"public-api",
-						"users",
-						"{{id_1}}"
-					]
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n            \"title\": \"Buy: {{toDoTask}}\",\r\n            \"completed\": \"false\"\r\n        }\r\n\r\n        ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/todos/{{user_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"todos",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MarkToDoAsCompleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n            \"title\": \"{{toDo_Title}}\",\r\n            \"completed\": \"true\"\r\n        }\r\n\r\n        ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/todos/{{toDo_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"todos",
+								"{{toDo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get To Do Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ToDo task have supplied name\", function () {\r",
+									"  pm.expect(pm.response.json().data.title).to.eql(pm.collectionVariables.get(\"toDo_Title\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ToDo task is completed\", function () {\r",
+									"  pm.expect(pm.response.json().data.completed).to.eql(true);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public-api/todos/{{toDo_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"todos",
+								"{{toDo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 204\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.eql(204);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public-api/users/{{user_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public-api",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"auth": {
@@ -1025,55 +1786,15 @@
 			"value": "{{$randomStreetAddress}}"
 		},
 		{
-			"key": "id_1",
-			"value": ""
-		},
-		{
-			"key": "name2",
-			"value": "Rita Vrataski"
-		},
-		{
-			"key": "gender2",
-			"value": "Female"
-		},
-		{
-			"key": "email2",
-			"value": "fullmetalbitch19@abv.bg"
-		},
-		{
-			"key": "title1",
-			"value": "Edge of Tomorrow"
-		},
-		{
-			"key": "body1",
-			"value": "Edge of Tomorrow is a 2014 American science fiction action film starring Tom Cruise and Emily Blunt"
-		},
-		{
-			"key": "postId",
-			"value": ""
-		},
-		{
-			"key": "postId_1",
-			"value": ""
-		},
-		{
 			"key": "updateTitle",
-			"value": "This is update Title"
+			"value": "{{$randomCompanyName}}"
 		},
 		{
 			"key": "updateBody",
-			"value": "This is update Body"
-		},
-		{
-			"key": "toDo_id",
-			"value": ""
+			"value": "{{$randomProductName}}"
 		},
 		{
 			"key": "postsBeforeCreation",
-			"value": ""
-		},
-		{
-			"key": "postsBeforeCreation_1",
 			"value": ""
 		},
 		{
@@ -1086,6 +1807,50 @@
 		},
 		{
 			"key": "post_Body",
+			"value": ""
+		},
+		{
+			"key": "comment_Id",
+			"value": ""
+		},
+		{
+			"key": "comment_Name",
+			"value": ""
+		},
+		{
+			"key": "comment_Body",
+			"value": ""
+		},
+		{
+			"key": "updatePost_Id",
+			"value": ""
+		},
+		{
+			"key": "updatePost_Title",
+			"value": ""
+		},
+		{
+			"key": "updatePost_Body",
+			"value": ""
+		},
+		{
+			"key": "toDoTask",
+			"value": "{{$randomProductName}}"
+		},
+		{
+			"key": "toDo_id",
+			"value": ""
+		},
+		{
+			"key": "toDo_Title",
+			"value": ""
+		},
+		{
+			"key": "toDo_Status",
+			"value": ""
+		},
+		{
+			"key": "title",
 			"value": ""
 		}
 	]

@@ -1,0 +1,1 @@
+newman run  GoRestExercices.postman_collection.json -e GoRestExercicesEnvironment.postman_environment.json -r htmlextra
